@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesquisa de Satisfação</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .rating {
+      margin: 15px 0;
+    }
+    .rating label {
+      font-size: 20px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .mensagem {
+      margin-top: 20px;
+      font-size: 16px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Pesquisa de Satisfação</h1>
+    <form id="formPesquisa">
+      <label for="cpf">CPF:</label>
+      <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" required>
+
+      <div class="rating">
+        <p>Nota (1 = MUITO RUIM |
+                 2 = RUIM |
+                 3 = REGULAR |
+                 4 = BOM |
+                 5 = MUITO BOM)</p>
+        <div>
+          <label><input type="radio" name="nota" value="1" required> 1</label>
+          <label><input type="radio" name="nota" value="2"> 2</label>
+          <label><input type="radio" name="nota" value="3"> 3</label>
+          <label><input type="radio" name="nota" value="4"> 4</label>
+          <label><input type="radio" name="nota" value="5"> 5</label>
+        </div>
+      </div>
+
+      <button type="submit">Enviar</button>
+      <div class="mensagem" id="mensagem"></div>
+    </form>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbx6SeYX5df6g4GLhRJ2rSNZ-WT5t92Y3A0AUMkDQfmrtn6XQ2fIVscdIhthxvPcOeGpvg/exec";
+    const form = document.getElementById("formPesquisa");
+    const mensagem = document.getElementById("mensagem");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const dados = new FormData(form);
+
+      fetch(scriptURL, { method: "POST", body: dados })
+        .then(response => {
+          if (response.ok) {
+            mensagem.textContent = "✅ Resposta enviada com sucesso! Obrigado.";
+            form.reset();
+          } else {
+            mensagem.textContent = "❌ Erro ao enviar. Tente novamente.";
+          }
+        })
+        .catch(() => {
+          mensagem.textContent = "❌ Erro de conexão. Tente novamente.";
+        });
+    });
+  </script>
+
+</body>
+</html>
